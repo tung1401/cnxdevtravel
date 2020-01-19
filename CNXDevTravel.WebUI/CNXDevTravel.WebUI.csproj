@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CNXDevTravel.Core\CNXDevTravel.Core.csproj" />
+    <ProjectReference Include="..\CNXDevTravel.Model\CNXDevTravel.Model.csproj" />
+  </ItemGroup>
+
 </Project>

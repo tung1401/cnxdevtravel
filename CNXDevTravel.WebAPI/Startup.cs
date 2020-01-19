@@ -11,6 +11,7 @@ using CNXDevTravel.Core;
 using CNXDevTravel.Service;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using MFEC.SQ.API.Filter;
 
 namespace CNXDevTravel.WebAPI
 {
@@ -29,6 +30,11 @@ namespace CNXDevTravel.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(CustomActionFilter));
+            });
+
             services.AddDbContext<CNXDevTravelDataContext>(option => option.UseSqlServer(CNXDevTravelWebAPIConfig.ConnectionString), ServiceLifetime.Transient);
             services.AddScoped<ServiceFactory>();
 
@@ -71,7 +77,7 @@ namespace CNXDevTravel.WebAPI
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

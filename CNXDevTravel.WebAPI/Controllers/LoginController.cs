@@ -9,23 +9,22 @@ using System.Threading.Tasks;
 
 namespace CNXDevTravel.WebAPI.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private ServiceFactory _service;
-        public UserController(ServiceFactory service)
+        public LoginController(ServiceFactory service)
         {
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Post([FromBody] LoginModel loginModel)
         {
-            var username = User.Identity.Name;
-            return Ok(username);
+            var result = _service.User().Authen(loginModel);
+            return Ok(result);
         }
-
     }
 }
