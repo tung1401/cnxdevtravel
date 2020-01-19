@@ -1,4 +1,5 @@
 ﻿using CNXDevTravel.Model.Entities;
+using CNXDevTravel.Repository.Interfaces;
 using MFEC.SQ.Repository.Bases;
 using Microsoft.EntityFrameworkCore;
 

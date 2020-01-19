@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CNXDevTravel.Model.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using CNXDevTravel.Core;
+using CNXDevTravel.Service;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CNXDevTravel.WebAPI
 {
@@ -20,6 +19,8 @@ namespace CNXDevTravel.WebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            CNXDevTravelWebAPIConfig.ConnectionString = Configuration["ConnectionString:CNXDevDatabase"];
+            CNXDevTravelWebAPIConfig.TokenKey = Configuration["APIConfig:TokenKey"];
         }
 
         public IConfiguration Configuration { get; }
@@ -28,8 +29,34 @@ namespace CNXDevTravel.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<CNXDevTravelDataContext>(option => option.UseSqlServer(""), ServiceLifetime.Transient);
+            services.AddDbContext<CNXDevTravelDataContext>(option => option.UseSqlServer(CNXDevTravelWebAPIConfig.ConnectionString), ServiceLifetime.Transient);
+            services.AddScoped<ServiceFactory>();
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "CNXDev Travel API", Version = "v1" });
+            });
+
+            var key = Encoding.UTF8.GetBytes(CNXDevTravelWebAPIConfig.TokenKey);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,9 +73,17 @@ namespace CNXDevTravel.WebAPI
 
             app.UseAuthorization();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNXDev Travel API");
             });
         }
     }
