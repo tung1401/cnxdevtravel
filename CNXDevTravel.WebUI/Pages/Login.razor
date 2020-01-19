@@ -110,33 +110,33 @@
         }
 
         isLoading = true;
-        var authenResult = await ServiceFactory.Account().AuthenAsync(Username, Password);
+        //var authenResult = await ServiceFactory.Account().AuthenAsync(Username, Password);
 
-        if (authenResult != null)
-        {
-            if (authenResult.Status == Model.ResponseStatus.Success && authenResult.Data != null)
-            {
-                await JSRuntime.InvokeAsync<object>("SubmitForm", "loginform",
-                    authenResult.Data.Name,
-                    authenResult.Data.Role,
-                    authenResult.Data.Department,
-                    authenResult.Data.ProfileImage,
-                    authenResult.Data.Token);
-                isLoading = false;
-            }
-            else
-            {
-                Message = authenResult.Description;
-                isLoading = false;
-                return;
-            }
-        }
-        else
-        {
-            Message = "Authentication Fail";
-            isLoading = false;
-            return;
-        }
+        //if (authenResult != null)
+        //{
+        //    if (authenResult.Status == Model.ResponseStatus.Success && authenResult.Data != null)
+        //    {
+        //        await JSRuntime.InvokeAsync<object>("SubmitForm", "loginform",
+        //            authenResult.Data.Name,
+        //            authenResult.Data.Role,
+        //            authenResult.Data.Department,
+        //            authenResult.Data.ProfileImage,
+        //            authenResult.Data.Token);
+        //        isLoading = false;
+        //    }
+        //    else
+        //    {
+        //        Message = authenResult.Description;
+        //        isLoading = false;
+        //        return;
+        //    }
+        //}
+        //else
+        //{
+        //    Message = "Authentication Fail";
+        //    isLoading = false;
+        //    return;
+        //}
     }
 }
 

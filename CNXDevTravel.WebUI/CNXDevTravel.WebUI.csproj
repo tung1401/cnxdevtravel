@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Syncfusion.EJ2.Blazor" Version="17.3.0.18-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CNXDevTravel.Core\CNXDevTravel.Core.csproj" />
     <ProjectReference Include="..\CNXDevTravel.Model\CNXDevTravel.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\scripts\MapsData\" />
   </ItemGroup>
 
 </Project>

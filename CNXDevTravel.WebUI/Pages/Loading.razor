@@ -1,0 +1,45 @@
+﻿@using Syncfusion.EJ2.Blazor.Popups
+
+<EjsDialog ID="LoadingDialog" @ref="LoadingDialog" Width="100" IsModal="true" @bind-Visible="@LoadingVisible">
+    <DialogTemplates>
+        <Content>
+            <div class="text-center">
+                <img src="/img/loading2.gif" width="120" height="120" class="center loading-image" />
+            </div>
+        </Content>
+    </DialogTemplates>
+</EjsDialog>
+
+@code {
+    [CascadingParameter]
+    public bool LoadingVisible { get; set; }
+    EjsDialog LoadingDialog = new EjsDialog();
+
+    protected override void OnInitialized()
+    {
+        if (LoadingVisible)
+        {
+            LoadingDialog.Show();
+        }
+        else
+        {
+            LoadingDialog.Hide();
+        }
+    }
+}
+
+<style>
+    #LoadingDialog .e-dlg-content {
+        padding: 0px !important;
+        background: transparent !important;
+    }
+
+    #LoadingDialog {
+        background-color: transparent !important;
+        box-shadow: unset !important;
+    }
+
+    /*.e-dlg-overlay {
+        background-color: #ffffff !important;
+    }*/
+</style>
