@@ -1,6 +1,8 @@
 ﻿@page "/login"
 
 @using CNXDevTravel.Core
+@using CNXDevTravel.Model.RequestModel
+@using CNXDevTravel.Model.ResponseModel
 @inject IJSRuntime JSRuntime
 @inject CNXDevTravelHttpClient CNXDevTravelHttpClient
 <style>
@@ -27,7 +29,7 @@
         }
 
     body {
-        background-image: url(/img/bg2.jpg);
+        background-image: url(http://www.cnxdevsoft.com/assets/img/slider.jpg);
         background-position: center center;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -63,8 +65,8 @@
 <body>
     <div class="centered">
         <div class="page">
-            <img src="/img/MFEC.png" style="width: 35%" />
-            <h3 class="my-2">ลงชื่อเข้าใช้</h3>
+            <img src="http://www.cnxdevsoft.com/media/1001/logo3.png" style="width: 35%" />
+            <h3 class="my-2">Login</h3>
 
             <p class="error">@Message</p>
 
@@ -84,7 +86,7 @@
                 <input id="profileimageurl" name="profileimageurl" type="hidden" />
                 <input id="token" name="token" type="hidden" />
 
-                <button class="ml-md-auto btn btn-primary" style="width: 100%" type="submit" target="_top">เข้าสู่ระบบ</button>
+                <button class="ml-md-auto btn btn-primary" style="width: 100%" type="submit" target="_top">Login</button>
             </form>
         </div>
     </div>
@@ -96,8 +98,8 @@
 
 @code
 {
-    string Username { get; set; }
-    string Password { get; set; }
+        string Username { get; set; }
+        string Password { get; set; }
     public string Message { get; set; }
     bool isLoading { get; set; }
 
@@ -110,33 +112,36 @@
         }
 
         isLoading = true;
-        //var authenResult = await ServiceFactory.Account().AuthenAsync(Username, Password);
+        var loginModel = new LoginModel() 
+        { 
+            Username = this.Username,
+            Password = this.Password
+        };
+        var authenResult = await CNXDevTravelHttpClient.Request<AuthenModel>(HttpMethod.Post, CNXDevTravelWebUIConfig.AuthenEndPoint(), loginModel);
 
-        //if (authenResult != null)
-        //{
-        //    if (authenResult.Status == Model.ResponseStatus.Success && authenResult.Data != null)
-        //    {
-        //        await JSRuntime.InvokeAsync<object>("SubmitForm", "loginform",
-        //            authenResult.Data.Name,
-        //            authenResult.Data.Role,
-        //            authenResult.Data.Department,
-        //            authenResult.Data.ProfileImage,
-        //            authenResult.Data.Token);
-        //        isLoading = false;
-        //    }
-        //    else
-        //    {
-        //        Message = authenResult.Description;
-        //        isLoading = false;
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-        //    Message = "Authentication Fail";
-        //    isLoading = false;
-        //    return;
-        //}
+        if (authenResult != null)
+        {
+            if (authenResult.Status == "Success")
+            {
+                await JSRuntime.InvokeAsync<object>("SubmitForm", "loginform",
+                    authenResult.Data.Name,
+                    authenResult.Data.ProfileImage,
+                    authenResult.Data.Token);
+                isLoading = false;
+            }
+            else
+            {
+                Message = authenResult.Description;
+                isLoading = false;
+                return;
+            }
+        }
+        else
+        {
+            Message = "Authentication Fail";
+            isLoading = false;
+            return;
+        }
     }
 }
 

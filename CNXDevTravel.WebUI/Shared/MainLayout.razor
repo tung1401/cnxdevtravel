@@ -1,16 +1,53 @@
 ﻿@inherits LayoutComponentBase
 
+@inject IHttpContextAccessor HttpContextAccessor
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<AuthorizeView>
+    <NotAuthorized>
+        <CNXDevTravel.WebUI.Pages.Login/>
+    </NotAuthorized>
+    <Authorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
 
-<div class="main">
-    <div class="top-row px-4" style="z-index:9999;">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+        <div class="main">
+            <div class="top-row px-4" style="z-index:9999;background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);">
+                <div class="top-row px-4 col-auto float-right" style="background-color:transparent">
+                    <img src="@ProfileImage" class="float-right" style="border-radius: 25px;width: 50px;height: 50px;margin-right: 20px" />
+                    <div class="container">
+                        <div class="row h-65">
+                            <span class="float-right" style="color:white;">@HttpContextAccessor.HttpContext.User.Identity.Name</span>
+                        </div>
+                        <div class="row h-35">
+                            <span class="float-right" style="color:white;">N/A</span>
+                        </div>
+                    </div>
 
-    <div class="content px-4" style="z-index:1;">
-        @Body
-    </div>
-</div>
+                    <a href="/account/logout" style="color:white">Logout</a>
+                </div>
+            </div>
+
+            <div class="content px-4" style="z-index:1;">
+                @Body
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+
+@code{
+    string ProfileImage { get; set; } = "/img/profile.jpg";
+
+    protected override void OnInitialized()
+    {
+        if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        {
+            try
+            {
+                ProfileImage = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(m => m.Type == "ProfileImage")?.Value;
+            }
+            catch { }
+        }
+    }
+}

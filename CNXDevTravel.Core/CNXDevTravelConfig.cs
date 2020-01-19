@@ -7,7 +7,7 @@ namespace CNXDevTravel.Core
     public static class CNXDevTravelWebUIConfig
     {
         public static string APIEndPoint { get; set; }
-        public static string AuthenEndPoint = $"{APIEndPoint}/Login";
+        public static string AuthenEndPoint() { return $"{APIEndPoint}/Login"; }
     }
 
     public static class CNXDevTravelWebAPIConfig

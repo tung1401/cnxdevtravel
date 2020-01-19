@@ -37,7 +37,7 @@ namespace CNXDevTravel.Core
             }
             var response = await _httpClient.SendAsync(requestMessage);
             var responseString = await response.Content.ReadAsStringAsync();
-            var responseModel = System.Text.Json.JsonSerializer.Deserialize<ResponseModel<T>>(responseString);
+            var responseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseModel<T>>(responseString);
             return responseModel;
         }
     }

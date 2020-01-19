@@ -186,12 +186,12 @@
         </div>
     </div>
 @code {
-    EjsDashboardLayout DashboardInstance;
-    EjsAccumulationChart ActiveVisitorsInstance;
-    EjsMaps MapInstance;
-    EjsChart VisitorsChartInstance;
-    EjsChart TrafficHistoryInstance;
-    EjsAccumulationChart StatisticsChartInstance;
+    EjsDashboardLayout DashboardInstance = new EjsDashboardLayout();
+    EjsAccumulationChart ActiveVisitorsInstance = new EjsAccumulationChart();
+    EjsMaps MapInstance = new EjsMaps();
+    EjsChart VisitorsChartInstance = new EjsChart();
+    EjsChart TrafficHistoryInstance = new EjsChart();
+    EjsAccumulationChart StatisticsChartInstance = new EjsAccumulationChart();
     public string Visible { get; set; } = "hidden";
     public double[] CellSpacing = { 5, 5 };
     public double Columns = 6;
@@ -199,7 +199,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         //OnAfterRenderAsync will be triggered after the component rendered.
-        await Task.Delay(2500);
+        await Task.Delay(1000);
         // refreshing all the chart and map components to fit within the panel
         this.ActiveVisitorsInstance.Refresh();
         this.MapInstance.Refresh();
