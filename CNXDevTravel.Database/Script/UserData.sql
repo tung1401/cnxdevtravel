@@ -18,7 +18,7 @@ DECLARE @pv binary(16)
 BEGIN TRANSACTION
 GO
 SET IDENTITY_INSERT [dbo].[User] ON
-INSERT INTO [dbo].[User] ([UserId], [Username], [Password], [Name], [ProfileImage], [CreatedBy], [CreatedDate], [ModifiedBy], [ModifiedDate]) VALUES (1, N'patompol.t', N'P@$$w0rd', N'Patompol Taesuji', N'https://scontent.fbkk6-1.fna.fbcdn.net/v/t1.0-9/p960x960/52951190_10214478249532181_5645044150433742848_o.jpg?_nc_cat=110&_nc_eui2=AeGOgQLV8HFUgtsT5Hk9A8mU3VWRorSA-xMY3wvUFAdEESNLMZu6fK9xy5PClz4xKm8pw78B9UjfR2j1W6hHNx_uh5UtNW7fhSD0_Z2l3RAe1A&_nc_ohc=O_ofQur-f5EAX_726yC&_nc_ht=scontent.fbkk6-1.fna&_nc_tp=1002&oh=964c271a2e1ebe3e9695e06ef0bc4ccb&oe=5E9C1FC0', NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[User] ([UserId], [Username], [Password], [Name], [ProfileImage], [CreatedBy], [CreatedDate], [ModifiedBy], [ModifiedDate]) VALUES (1, N'patompol.t', N'P@$$w0rd', N'Patompol Taesuji', N'http://www.cnxdevsoft.com/media/1008/patompol-1.jpg', NULL, NULL, NULL, NULL)
 INSERT INTO [dbo].[User] ([UserId], [Username], [Password], [Name], [ProfileImage], [CreatedBy], [CreatedDate], [ModifiedBy], [ModifiedDate]) VALUES (2, N'passakorn.b', N'P@$$w0rd', N'Passakorn Buadee', NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[User] OFF
 COMMIT TRANSACTION
